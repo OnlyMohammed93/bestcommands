@@ -1,1 +1,789 @@
+<!DOCTYPE html>
+<html lang="ku" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bot Commands Documentation</title>
+    <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@300;400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        :root {
+            --bg-color: #0f111a;
+            --card-bg: #1a1d2b;
+            --accent-color: #5865f2;
+            --hover-color: #4752c4;
+            --text-color: #e0e6ed;
+            --text-muted: #94a3b8;
+            --border-color: #2e344d;
+            --slash-color: #5865f2;
+            --prefix-color: #eb459e;
+        }
 
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Vazirmatn', sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            line-height: 1.6;
+            padding-bottom: 50px;
+        }
+
+        .hero-header {
+            position: relative;
+            width: 100%;
+            height: 280px;
+            background: url('https://cdn.discordapp.com/attachments/1552683237514674208/1553252554329165945/CniYzTUKdrssJAKSktVBsC.gif?ex=6ab892aa&is=6ab7412a&hm=cf11b206d10dc2056c98442e731ef55e1dbdcf45daa55de40cf848221f764fc2&') center/cover no-repeat;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            border-bottom: 3px solid var(--accent-color);
+        }
+
+        .hero-overlay {
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(15, 17, 26, 0.75);
+            backdrop-filter: blur(3px);
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 2;
+        }
+
+        .hero-content h1 {
+            font-size: 2.5rem;
+            color: #ffffff;
+            text-shadow: 0 0 10px rgba(88, 101, 242, 0.8);
+            margin-bottom: 10px;
+        }
+
+        .hero-content p {
+            font-size: 1.1rem;
+            color: var(--text-muted);
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 30px auto 0 auto;
+            padding: 0 20px;
+        }
+
+        .category-title {
+            font-size: 1.5rem;
+            margin: 35px 0 15px 0;
+            color: var(--accent-color);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            border-bottom: 2px solid var(--border-color);
+            padding-bottom: 8px;
+        }
+
+        .command-card {
+            background-color: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            margin-bottom: 12px;
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .command-card:hover {
+            border-color: var(--accent-color);
+            box-shadow: 0 4px 15px rgba(88, 101, 242, 0.2);
+        }
+
+        .command-header {
+            padding: 16px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            cursor: pointer;
+            user-select: none;
+        }
+
+        .command-name {
+            font-size: 1.05rem;
+            font-weight: bold;
+            color: #ffffff;
+            direction: ltr;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .badge-container {
+            display: flex;
+            gap: 6px;
+        }
+
+        .command-badge {
+            padding: 3px 10px;
+            border-radius: 15px;
+            font-size: 0.8rem;
+            font-weight: bold;
+        }
+
+        .badge-slash {
+            background-color: rgba(88, 101, 242, 0.2);
+            color: var(--slash-color);
+            border: 1px solid var(--slash-color);
+        }
+
+        .badge-prefix {
+            background-color: rgba(235, 69, 158, 0.2);
+            color: var(--prefix-color);
+            border: 1px solid var(--prefix-color);
+        }
+
+        .arrow-icon {
+            transition: transform 0.3s ease;
+            color: var(--text-muted);
+        }
+
+        .command-card.active .arrow-icon {
+            transform: rotate(180deg);
+            color: var(--accent-color);
+        }
+
+        .command-body {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease, padding 0.3s ease;
+            background-color: rgba(0, 0, 0, 0.2);
+            padding: 0 20px;
+        }
+
+        .command-card.active .command-body {
+            padding: 15px 20px 20px 20px;
+            max-height: 500px;
+        }
+
+        .info-group {
+            margin-bottom: 12px;
+        }
+
+        .info-label {
+            font-weight: bold;
+            color: var(--accent-color);
+            font-size: 0.95rem;
+        }
+
+        .usage-box {
+            background-color: #0f111a;
+            border-radius: 6px;
+            padding: 10px;
+            font-family: monospace;
+            color: #57F287;
+            direction: ltr;
+            text-align: left;
+            margin-top: 5px;
+            border: 1px solid var(--border-color);
+        }
+
+        .usage-box.prefix-style {
+            color: #FEE75C;
+        }
+
+        footer {
+            text-align: center;
+            margin-top: 50px;
+            color: var(--text-muted);
+            font-size: 0.9rem;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="hero-header">
+        <div class="hero-overlay"></div>
+        <div class="hero-content">
+            <h1><i class="fa-solid fa-robot"></i> ڕێنیشاندەری کۆماندەکانی بۆت</h1>
+            <p>تەواوی فەرمانەکانی Slash Commands و Prefix Commands</p>
+        </div>
+    </div>
+
+    <div class="container">
+
+        <!-- Giveaway Commands -->
+        <div class="category-title">
+            <i class="fa-solid fa-gift"></i> سیستەمی گیڤئاوەی (GiveAway Commands)
+        </div>
+
+        <div class="command-card">
+            <div class="command-header" onclick="toggleCard(this)">
+                <div class="command-name">
+                    <span>GiveAway-Start</span>
+                    <div class="badge-container">
+                        <span class="command-badge badge-slash">Slash</span>
+                        <span class="command-badge badge-prefix">Prefix</span>
+                    </div>
+                </div>
+                <i class="fa-solid fa-chevron-down arrow-icon"></i>
+            </div>
+            <div class="command-body">
+                <div class="info-group">
+                    <div class="info-label">شیکردنەوە:</div>
+                    <div>دەستپێکردنی گیڤئاوەی نوێ لە سێرڤەر.</div>
+                </div>
+                <div class="info-group">
+                    <div class="info-label">Slash Command:</div>
+                    <div class="usage-box">/giveaway-start duration:1d winners:1 prize:Nitro</div>
+                </div>
+                <div class="info-group">
+                    <div class="info-label">Prefix Command:</div>
+                    <div class="usage-box prefix-style">!gstart 1d 1 Nitro</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="command-card">
+            <div class="command-header" onclick="toggleCard(this)">
+                <div class="command-name">
+                    <span>GiveAway-End</span>
+                    <div class="badge-container">
+                        <span class="command-badge badge-slash">Slash</span>
+                        <span class="command-badge badge-prefix">Prefix</span>
+                    </div>
+                </div>
+                <i class="fa-solid fa-chevron-down arrow-icon"></i>
+            </div>
+            <div class="command-body">
+                <div class="info-group">
+                    <div class="info-label">شیکردنەوە:</div>
+                    <div>کۆتایی پێهێنانی گیڤئاوەیی دەستبەجێ.</div>
+                </div>
+                <div class="info-group">
+                    <div class="info-label">Slash Command:</div>
+                    <div class="usage-box">/giveaway-end message_id:1552637158651600937</div>
+                </div>
+                <div class="info-group">
+                    <div class="info-label">Prefix Command:</div>
+                    <div class="usage-box prefix-style">!gend 1552637158651600937</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="command-card">
+            <div class="command-header" onclick="toggleCard(this)">
+                <div class="command-name">
+                    <span>GiveAway-Stop</span>
+                    <div class="badge-container">
+                        <span class="command-badge badge-slash">Slash</span>
+                        <span class="command-badge badge-prefix">Prefix</span>
+                    </div>
+                </div>
+                <i class="fa-solid fa-chevron-down arrow-icon"></i>
+            </div>
+            <div class="command-body">
+                <div class="info-group">
+                    <div class="info-label">شیکردنەوە:</div>
+                    <div>ڕاگرتنی گیڤئاوەی و هەڵوەشاندنەوەی بێ دیاریکردنی براوە.</div>
+                </div>
+                <div class="info-group">
+                    <div class="info-label">Slash Command:</div>
+                    <div class="usage-box">/giveaway-stop message_id:1552637158651600937</div>
+                </div>
+                <div class="info-group">
+                    <div class="info-label">Prefix Command:</div>
+                    <div class="usage-box prefix-style">!gstop 1552637158651600937</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="command-card">
+            <div class="command-header" onclick="toggleCard(this)">
+                <div class="command-name">
+                    <span>GiveAway-Winner</span>
+                    <div class="badge-container">
+                        <span class="command-badge badge-slash">Slash</span>
+                        <span class="command-badge badge-prefix">Prefix</span>
+                    </div>
+                </div>
+                <i class="fa-solid fa-chevron-down arrow-icon"></i>
+            </div>
+            <div class="command-body">
+                <div class="info-group">
+                    <div class="info-label">شیکردنەوە:</div>
+                    <div>دوبارە هەڵبژاردنەوەی براوە (Reroll).</div>
+                </div>
+                <div class="info-group">
+                    <div class="info-label">Slash Command:</div>
+                    <div class="usage-box">/giveaway-winner message_id:1552637158651600937</div>
+                </div>
+                <div class="info-group">
+                    <div class="info-label">Prefix Command:</div>
+                    <div class="usage-box prefix-style">!greroll 1552637158651600937</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="command-card">
+            <div class="command-header" onclick="toggleCard(this)">
+                <div class="command-name">
+                    <span>GiveAway-WinnerDm</span>
+                    <div class="badge-container">
+                        <span class="command-badge badge-slash">Slash</span>
+                        <span class="command-badge badge-prefix">Prefix</span>
+                    </div>
+                </div>
+                <i class="fa-solid fa-chevron-down arrow-icon"></i>
+            </div>
+            <div class="command-body">
+                <div class="info-group">
+                    <div class="info-label">شیکردنەوە:</div>
+                    <div>ناردنی نامەی تایبەت (DM) بۆ براوەی گیڤئاوەیەکە.</div>
+                </div>
+                <div class="info-group">
+                    <div class="info-label">Slash Command:</div>
+                    <div class="usage-box">/giveaway-winnerdm user:@username message:...</div>
+                </div>
+                <div class="info-group">
+                    <div class="info-label">Prefix Command:</div>
+                    <div class="usage-box prefix-style">!gwinnerdm @username [message]</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="command-card">
+            <div class="command-header" onclick="toggleCard(this)">
+                <div class="command-name">
+                    <span>GiveAway-EditTime</span>
+                    <div class="badge-container">
+                        <span class="command-badge badge-slash">Slash</span>
+                        <span class="command-badge badge-prefix">Prefix</span>
+                    </div>
+                </div>
+                <i class="fa-solid fa-chevron-down arrow-icon"></i>
+            </div>
+            <div class="command-body">
+                <div class="info-group">
+                    <div class="info-label">شیکردنەوە:</div>
+                    <div>دەستکاری کردنی کاتی ماوەی گیڤئاوەی بەردەوام.</div>
+                </div>
+                <div class="info-group">
+                    <div class="info-label">Slash Command:</div>
+                    <div class="usage-box">/giveaway-edittime message_id:1552637158651600937 time:2h</div>
+                </div>
+                <div class="info-group">
+                    <div class="info-label">Prefix Command:</div>
+                    <div class="usage-box prefix-style">!gedittime 1552637158651600937 2h</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="command-card">
+            <div class="command-header" onclick="toggleCard(this)">
+                <div class="command-name">
+                    <span>GiveAway-EditAll</span>
+                    <div class="badge-container">
+                        <span class="command-badge badge-slash">Slash</span>
+                        <span class="command-badge badge-prefix">Prefix</span>
+                    </div>
+                </div>
+                <i class="fa-solid fa-chevron-down arrow-icon"></i>
+            </div>
+            <div class="command-body">
+                <div class="info-group">
+                    <div class="info-label">شیکردنەوە:</div>
+                    <div>دەستکاریکردنی گشتی (دیاری، کات، ژمارەی براوەکان).</div>
+                </div>
+                <div class="info-group">
+                    <div class="info-label">Slash Command:</div>
+                    <div class="usage-box">/giveaway-editall message_id:... prize:VIP winners:2</div>
+                </div>
+                <div class="info-group">
+                    <div class="info-label">Prefix Command:</div>
+                    <div class="usage-box prefix-style">!geditall 1552637158651600937 VIP 2</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Feedback Commands -->
+        <div class="category-title">
+            <i class="fa-solid fa-comments"></i> سیستەمی FeedBack
+        </div>
+
+        <div class="command-card">
+            <div class="command-header" onclick="toggleCard(this)">
+                <div class="command-name">
+                    <span>set-feedback-points</span>
+                    <div class="badge-container">
+                        <span class="command-badge badge-slash">Slash</span>
+                        <span class="command-badge badge-prefix">Prefix</span>
+                    </div>
+                </div>
+                <i class="fa-solid fa-chevron-down arrow-icon"></i>
+            </div>
+            <div class="command-body">
+                <div class="info-group">
+                    <div class="info-label">شیکردنەوە:</div>
+                    <div>دیاریکردنی بڕی خاڵەکان بۆ ناردنی Feedback.</div>
+                </div>
+                <div class="info-group">
+                    <div class="info-label">Slash Command:</div>
+                    <div class="usage-box">/set-feedback-points points:10</div>
+                </div>
+                <div class="info-group">
+                    <div class="info-label">Prefix Command:</div>
+                    <div class="usage-box prefix-style">!set-feedback-points 10</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="command-card">
+            <div class="command-header" onclick="toggleCard(this)">
+                <div class="command-name">
+                    <span>set-delete-points</span>
+                    <div class="badge-container">
+                        <span class="command-badge badge-slash">Slash</span>
+                        <span class="command-badge badge-prefix">Prefix</span>
+                    </div>
+                </div>
+                <i class="fa-solid fa-chevron-down arrow-icon"></i>
+            </div>
+            <div class="command-body">
+                <div class="info-group">
+                    <div class="info-label">شیکردنەوە:</div>
+                    <div>دیاریکردنی خاڵە لێبڕاوەکان لە کاتی سڕینەوەی FeedBack.</div>
+                </div>
+                <div class="info-group">
+                    <div class="info-label">Slash Command:</div>
+                    <div class="usage-box">/set-delete-points points:5</div>
+                </div>
+                <div class="info-group">
+                    <div class="info-label">Prefix Command:</div>
+                    <div class="usage-box prefix-style">!set-delete-points 5</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="command-card">
+            <div class="command-header" onclick="toggleCard(this)">
+                <div class="command-name">
+                    <span>set-mention-points</span>
+                    <div class="badge-container">
+                        <span class="command-badge badge-slash">Slash</span>
+                        <span class="command-badge badge-prefix">Prefix</span>
+                    </div>
+                </div>
+                <i class="fa-solid fa-chevron-down arrow-icon"></i>
+            </div>
+            <div class="command-body">
+                <div class="info-group">
+                    <div class="info-label">شیکردنەوە:</div>
+                    <div>دیاریکردنی خاڵ بۆ منشن کردنی FeedBack.</div>
+                </div>
+                <div class="info-group">
+                    <div class="info-label">Slash Command:</div>
+                    <div class="usage-box">/set-mention-points points:3</div>
+                </div>
+                <div class="info-group">
+                    <div class="info-label">Prefix Command:</div>
+                    <div class="usage-box prefix-style">!set-mention-points 3</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="command-card">
+            <div class="command-header" onclick="toggleCard(this)">
+                <div class="command-name">
+                    <span>set-offers-points</span>
+                    <div class="badge-container">
+                        <span class="command-badge badge-slash">Slash</span>
+                        <span class="command-badge badge-prefix">Prefix</span>
+                    </div>
+                </div>
+                <i class="fa-solid fa-chevron-down arrow-icon"></i>
+            </div>
+            <div class="command-body">
+                <div class="info-group">
+                    <div class="info-label">شیکردنەوە:</div>
+                    <div>دیاریکردنی خاڵ بۆ بەشی ئۆفەرەکان.</div>
+                </div>
+                <div class="info-group">
+                    <div class="info-label">Slash Command:</div>
+                    <div class="usage-box">/set-offers-points points:15</div>
+                </div>
+                <div class="info-group">
+                    <div class="info-label">Prefix Command:</div>
+                    <div class="usage-box prefix-style">!set-offers-points 15</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="command-card">
+            <div class="command-header" onclick="toggleCard(this)">
+                <div class="command-name">
+                    <span>set-rename-points</span>
+                    <div class="badge-container">
+                        <span class="command-badge badge-slash">Slash</span>
+                        <span class="command-badge badge-prefix">Prefix</span>
+                    </div>
+                </div>
+                <i class="fa-solid fa-chevron-down arrow-icon"></i>
+            </div>
+            <div class="command-body">
+                <div class="info-group">
+                    <div class="info-label">شیکردنەوە:</div>
+                    <div>دیاریکردنی خاڵ بۆ گۆڕینی ناوی FeedBack.</div>
+                </div>
+                <div class="info-group">
+                    <div class="info-label">Slash Command:</div>
+                    <div class="usage-box">/set-rename-points points:2</div>
+                </div>
+                <div class="info-group">
+                    <div class="info-label">Prefix Command:</div>
+                    <div class="usage-box prefix-style">!set-rename-points 2</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="command-card">
+            <div class="command-header" onclick="toggleCard(this)">
+                <div class="command-name">
+                    <span>show-setting</span>
+                    <div class="badge-container">
+                        <span class="command-badge badge-slash">Slash</span>
+                        <span class="command-badge badge-prefix">Prefix</span>
+                    </div>
+                </div>
+                <i class="fa-solid fa-chevron-down arrow-icon"></i>
+            </div>
+            <div class="command-body">
+                <div class="info-group">
+                    <div class="info-label">شیکردنەوە:</div>
+                    <div>نیشاندانی تەواوی سیستم و خاڵە ڕێکخراوەکانی FeedBack.</div>
+                </div>
+                <div class="info-group">
+                    <div class="info-label">Slash Command:</div>
+                    <div class="usage-box">/show-setting</div>
+                </div>
+                <div class="info-group">
+                    <div class="info-label">Prefix Command:</div>
+                    <div class="usage-box prefix-style">!show-setting</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Ticket Commands -->
+        <div class="category-title">
+            <i class="fa-solid fa-ticket"></i> سیستەمی تیکێت (Ticket Commands)
+        </div>
+
+        <div class="command-card">
+            <div class="command-header" onclick="toggleCard(this)">
+                <div class="command-name">
+                    <span>Ticket-Lang</span>
+                    <div class="badge-container">
+                        <span class="command-badge badge-slash">Slash</span>
+                        <span class="command-badge badge-prefix">Prefix</span>
+                    </div>
+                </div>
+                <i class="fa-solid fa-chevron-down arrow-icon"></i>
+            </div>
+            <div class="command-body">
+                <div class="info-group">
+                    <div class="info-label">شیکردنەوە:</div>
+                    <div>دیاریکردنی زمانی سیستەمی تیکێت (ئینگلیزی، عەرەبی، کوردی).</div>
+                </div>
+                <div class="info-group">
+                    <div class="info-label">Slash Command:</div>
+                    <div class="usage-box">/ticket-lang language:[en/ar/ku]</div>
+                </div>
+                <div class="info-group">
+                    <div class="info-label">Prefix Command:</div>
+                    <div class="usage-box prefix-style">!ticket-lang [en/ar/ku]</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="command-card">
+            <div class="command-header" onclick="toggleCard(this)">
+                <div class="command-name">
+                    <span>Ticket-Setup</span>
+                    <div class="badge-container">
+                        <span class="command-badge badge-slash">Slash</span>
+                        <span class="command-badge badge-prefix">Prefix</span>
+                    </div>
+                </div>
+                <i class="fa-solid fa-chevron-down arrow-icon"></i>
+            </div>
+            <div class="command-body">
+                <div class="info-group">
+                    <div class="info-label">شیکردنەوە:</div>
+                    <div>دامەزراندنی پانێڵی تیکێت.</div>
+                </div>
+                <div class="info-group">
+                    <div class="info-label">Slash Command:</div>
+                    <div class="usage-box">/ticket-setup channel:#support category:TICKETS</div>
+                </div>
+                <div class="info-group">
+                    <div class="info-label">Prefix Command:</div>
+                    <div class="usage-box prefix-style">!ticket-setup #support [CategoryID]</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="command-card">
+            <div class="command-header" onclick="toggleCard(this)">
+                <div class="command-name">
+                    <span>Ticket-Open</span>
+                    <div class="badge-container">
+                        <span class="command-badge badge-slash">Slash</span>
+                        <span class="command-badge badge-prefix">Prefix</span>
+                    </div>
+                </div>
+                <i class="fa-solid fa-chevron-down arrow-icon"></i>
+            </div>
+            <div class="command-body">
+                <div class="info-group">
+                    <div class="info-label">شیکردنەوە:</div>
+                    <div>کردنەوەی تیکێتی دەستی بۆ بەکارهێنەرێک.</div>
+                </div>
+                <div class="info-group">
+                    <div class="info-label">Slash Command:</div>
+                    <div class="usage-box">/ticket-open user:@username</div>
+                </div>
+                <div class="info-group">
+                    <div class="info-label">Prefix Command:</div>
+                    <div class="usage-box prefix-style">!ticket-open @username</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="command-card">
+            <div class="command-header" onclick="toggleCard(this)">
+                <div class="command-name">
+                    <span>Ticket-Close</span>
+                    <div class="badge-container">
+                        <span class="command-badge badge-slash">Slash</span>
+                        <span class="command-badge badge-prefix">Prefix</span>
+                    </div>
+                </div>
+                <i class="fa-solid fa-chevron-down arrow-icon"></i>
+            </div>
+            <div class="command-body">
+                <div class="info-group">
+                    <div class="info-label">شیکردنەوە:</div>
+                    <div>داخستن و سڕینەوەی چەناڵی تیکێتەکە.</div>
+                </div>
+                <div class="info-group">
+                    <div class="info-label">Slash Command:</div>
+                    <div class="usage-box">/ticket-close</div>
+                </div>
+                <div class="info-group">
+                    <div class="info-label">Prefix Command:</div>
+                    <div class="usage-box prefix-style">!ticket-close</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="command-card">
+            <div class="command-header" onclick="toggleCard(this)">
+                <div class="command-name">
+                    <span>Ticket-Rename</span>
+                    <div class="badge-container">
+                        <span class="command-badge badge-slash">Slash</span>
+                        <span class="command-badge badge-prefix">Prefix</span>
+                    </div>
+                </div>
+                <i class="fa-solid fa-chevron-down arrow-icon"></i>
+            </div>
+            <div class="command-body">
+                <div class="info-group">
+                    <div class="info-label">شیکردنەوە:</div>
+                    <div>گۆڕینی ناوی چەناڵی تیکێتەکە.</div>
+                </div>
+                <div class="info-group">
+                    <div class="info-label">Slash Command:</div>
+                    <div class="usage-box">/ticket-rename name:issue-resolved</div>
+                </div>
+                <div class="info-group">
+                    <div class="info-label">Prefix Command:</div>
+                    <div class="usage-box prefix-style">!ticket-rename issue-resolved</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="command-card">
+            <div class="command-header" onclick="toggleCard(this)">
+                <div class="command-name">
+                    <span>Ticket-Category</span>
+                    <div class="badge-container">
+                        <span class="command-badge badge-slash">Slash</span>
+                        <span class="command-badge badge-prefix">Prefix</span>
+                    </div>
+                </div>
+                <i class="fa-solid fa-chevron-down arrow-icon"></i>
+            </div>
+            <div class="command-body">
+                <div class="info-group">
+                    <div class="info-label">شیکردنەوە:</div>
+                    <div>گواستنەوەی چەناڵی تیکێت بۆ کتێگۆرییەکی تر.</div>
+                </div>
+                <div class="info-group">
+                    <div class="info-label">Slash Command:</div>
+                    <div class="usage-box">/ticket-category category:CLOSED-TICKETS</div>
+                </div>
+                <div class="info-group">
+                    <div class="info-label">Prefix Command:</div>
+                    <div class="usage-box prefix-style">!ticket-category [CategoryID]</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Auto-Mod -->
+        <div class="category-title">
+            <i class="fa-solid fa-user-slash"></i> سیستەمی Auto-Mod
+        </div>
+
+        <div class="command-card">
+            <div class="command-header" onclick="toggleCard(this)">
+                <div class="command-name">
+                    <span>Blackhole System</span>
+                    <div class="badge-container">
+                        <span class="command-badge badge-slash" style="background: rgba(237,66,69,0.2); color: #ED4245; border-color: #ED4245;">Auto System</span>
+                    </div>
+                </div>
+                <i class="fa-solid fa-chevron-down arrow-icon"></i>
+            </div>
+            <div class="command-body">
+                <div class="info-group">
+                    <div class="info-label">شیکردنەوە:</div>
+                    <div>سیستەمی ئۆتۆماتیکی بۆ سڕینەوەی چات و تایم ئاوت کردنی هەژمارە هاککراوەکان.</div>
+                </div>
+                <div class="info-group">
+                    <div class="info-label">چۆنیەتی کارکردن:</div>
+                    <div class="usage-box">ئۆتۆماتیکی لە چەناڵی: 1552637158651600937</div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <footer>
+        <p>&copy; 2026 Developer Documentation. All rights reserved.</p>
+    </footer>
+
+    <script>
+        function toggleCard(headerElement) {
+            const card = headerElement.parentElement;
+            document.querySelectorAll('.command-card').forEach(c => {
+                if (c !== card) {
+                    c.classList.remove('active');
+                }
+            });
+            card.classList.toggle('active');
+        }
+    </script>
+</body>
+</html>
